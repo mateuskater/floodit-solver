@@ -55,6 +55,25 @@ t_map * gera_mapa(int linhas, int colunas, int cores){
     return new;
 }
 
+t_map * le_mapa(){
+    t_map *new;
+    int cores;
+    int teste;
+    scanf("%d %d %d\n", &new->nlinhas, &new->ncolunas, &cores);
+    for (int i = 0; i < new->nlinhas; i++){
+        for (int j = 0; j < new->ncolunas; j++){
+            scanf("%d ", &teste);
+            if (teste > cores){
+                printf("tabuleiro invalido. verifique os valores\n");
+                exit(1);
+            }else{
+                new->map[i][j] = teste;
+            }
+        }
+    }
+    return new;
+}
+
 void mostra_mapa(t_map *map){
 
     for (int i = 0; i < map->nlinhas; i++){
@@ -66,33 +85,29 @@ void mostra_mapa(t_map *map){
     printf("\n");
 }
 
+void jogada(t_map *map, char canto, int prox_cor){
+    if (canto == 'a')
+        paint(map, 0, 0, prox_cor);
+    else if (canto == 'b')
+        paint(map, 0, map->ncolunas-1, prox_cor);
+    else if (canto == 'c')
+        paint(map, map->nlinhas-1, map->ncolunas-1, prox_cor);
+    else if (canto == 'd')
+        paint(map, map->nlinhas-1, 0, prox_cor);
+    
+    map->cor_atual = prox_cor;
+}
+
 int main(){
     t_map *map;
-    int cores;
-    int linhas;
-    int colunas;
     int tentativas = 25;
-    int teste;
     int venceu = 0;
-    int **tabuleiro;
     char canto = 'a';
     int prox_cor;
 
-    // scanf("%d %d %d\n", &linhas, &colunas, &cores);
-
     map = gera_mapa(20, 20, 6);
+    map = le_mapa();
     
-    // for (int i = 0; i < linhas; i++){
-    //     for (int j = 0; j < colunas; j++){
-    //         scanf("%d ", &teste);
-    //         if (teste > cores){
-    //             printf("tabuleiro invalido. verifique os valores\n");
-    //             exit(1);
-    //         }else{
-    //             tabuleiro[i][j] = teste;
-    //         }
-    //     }
-    // }
     // main game loop
     for (int i = 0; i < tentativas; i++){
         if (winCheck(map)){
@@ -102,16 +117,7 @@ int main(){
         mostra_mapa(map);
         scanf("%c %d", &canto, &prox_cor);
         getc(stdin);
-        if (canto == 'a')
-            paint(map, 0, 0, prox_cor);
-        else if (canto == 'b')
-            paint(map, 0, map->ncolunas-1, prox_cor);
-        else if (canto == 'c')
-            paint(map, map->nlinhas-1, map->ncolunas-1, prox_cor);
-        else if (canto == 'd')
-            paint(map, map->nlinhas-1, 0, prox_cor);
-        
-        map->cor_atual = prox_cor;
+        jogada(map, canto, prox_cor);
 
     }
     venceu ? printf("venceste\n"): printf("perdeste\n");
