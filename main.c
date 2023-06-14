@@ -3,7 +3,7 @@
 #include <strings.h>
 #include <time.h>
 
-typedef struct t_map{
+typedef struct t_map {
     int nlinhas;
     int ncolunas;
     int cores;
@@ -11,7 +11,7 @@ typedef struct t_map{
     int **map;
 } t_map;
 
-void paint(t_map *map, int l, int c, int cor){
+void paint(t_map *map, int l, int c, int cor) {
     
     map->map[l][c] = cor;
     if (l < map->nlinhas-1 && map->map[l+1][c] == map->cor_atual)
@@ -24,10 +24,10 @@ void paint(t_map *map, int l, int c, int cor){
         paint(map, l, c+1, cor);
 }
 
-int winCheck(t_map *map){
+int winCheck(t_map *map) {
     int cor = map->map[1][1];
-    for (int i = 0; i < map->ncolunas; i++){
-        for (int j = 0; j < map->nlinhas; j++){
+    for (int i = 0; i < map->ncolunas; i++) {
+        for (int j = 0; j < map->nlinhas; j++) {
             if (map->map[i][j] != cor)
                 return 0;
         }
@@ -35,7 +35,7 @@ int winCheck(t_map *map){
     return 1;
 }
 
-t_map * gera_mapa(int linhas, int colunas, int cores){
+t_map * gera_mapa(int linhas, int colunas, int cores) {
     t_map *new;
 
     new = malloc(sizeof(t_map));
@@ -46,8 +46,8 @@ t_map * gera_mapa(int linhas, int colunas, int cores){
     int **tabuleiro = (int**)malloc(linhas * sizeof(int*));
     for(int i = 0; i < linhas; i++) tabuleiro[i] = (int*)malloc(colunas * sizeof(int));
     new->map = tabuleiro;
-    for (int i = 0; i < linhas; i++){
-        for (int j = 0; j < colunas; j++){
+    for (int i = 0; i < linhas; i++) {
+        for (int j = 0; j < colunas; j++) {
             new->map[i][j] = rand() % cores;
         }
     }
@@ -55,15 +55,15 @@ t_map * gera_mapa(int linhas, int colunas, int cores){
     return new;
 }
 
-t_map * le_mapa(){
+t_map * le_mapa() {
     t_map *new;
     int cores;
     int teste;
     scanf("%d %d %d\n", &new->nlinhas, &new->ncolunas, &cores);
-    for (int i = 0; i < new->nlinhas; i++){
-        for (int j = 0; j < new->ncolunas; j++){
+    for (int i = 0; i < new->nlinhas; i++) {
+        for (int j = 0; j < new->ncolunas; j++) {
             scanf("%d ", &teste);
-            if (teste > cores){
+            if (teste > cores) {
                 printf("tabuleiro invalido. verifique os valores\n");
                 exit(1);
             }else{
@@ -74,10 +74,10 @@ t_map * le_mapa(){
     return new;
 }
 
-void mostra_mapa(t_map *map){
+void mostra_mapa(t_map *map) {
 
-    for (int i = 0; i < map->nlinhas; i++){
-        for (int j = 0; j < map->ncolunas; j++){
+    for (int i = 0; i < map->nlinhas; i++) {
+        for (int j = 0; j < map->ncolunas; j++) {
             printf("%d ", map->map[i][j]);
         }
         printf("\n");
@@ -85,7 +85,7 @@ void mostra_mapa(t_map *map){
     printf("\n");
 }
 
-void jogada(t_map *map, char canto, int prox_cor){
+void jogada(t_map *map, char canto, int prox_cor) {
     if (canto == 'a')
         paint(map, 0, 0, prox_cor);
     else if (canto == 'b')
@@ -98,7 +98,7 @@ void jogada(t_map *map, char canto, int prox_cor){
     map->cor_atual = prox_cor;
 }
 
-int main(){
+int main() {
     t_map *map;
     int tentativas = 25;
     int venceu = 0;
@@ -109,8 +109,8 @@ int main(){
     map = le_mapa();
     
     // main game loop
-    for (int i = 0; i < tentativas; i++){
-        if (winCheck(map)){
+    for (int i = 0; i < tentativas; i++) {
+        if (winCheck(map)) {
             venceu = 1;
             break;
         }
