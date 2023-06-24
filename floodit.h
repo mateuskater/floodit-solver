@@ -7,8 +7,8 @@
 #include <stdlib.h>
 #include <assert.h>
 
-#include "queue-graph/src/graph.h"
-#include "queue-graph/src/queue.h"
+#include "graph.h"
+#include "queue.h"
 
 /* ------------------------------------------------------------------------------ */
 

@@ -6,7 +6,7 @@ CFLAGS = -g -Wall -O3
 
 subdir = queue-graph/src
 sources := $(shell $\
-             gfl=$$(ls $(subdir)/{g,q}*.c); $\
+             gfl=$$(ls {g,q}*.c); $\
              echo "$$gfl")
 sources += $(wildcard *.c)
 objects = $(sources:.c=.o)
