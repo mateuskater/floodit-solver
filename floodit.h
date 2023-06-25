@@ -1,8 +1,6 @@
 #ifndef _FLOODIT_H
 #define _FLOODIT_H
 
-/* ------------------------------------------------------------------------------ */
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
@@ -23,8 +21,6 @@ struct node_t
   double g;
   double h;
 };
-
-/* ------------------------------------------------------------------------------ */
 
 grafo_t *le_mapa(char *nome, FILE *input);
 

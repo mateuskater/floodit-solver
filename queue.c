@@ -1,7 +1,5 @@
 #include "queue.h"
 
-/* ------------------------------------------------------------------------------ */
-
 void fila_add(fila_t **fila, fila_t *elem)
 {
   if (!fila || !elem)
@@ -26,8 +24,6 @@ void fila_add(fila_t **fila, fila_t *elem)
 
   return;
 }
-
-/* ------------------------------------------------------------------------------ */
 
 fila_t *fila_remove(fila_t **fila, fila_t *elem)
 {
