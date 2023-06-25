@@ -2,65 +2,48 @@
 
 /* ------------------------------------------------------------------------------ */
 
-void queue_append (queue_t **queue, queue_t *elem)
+void fila_add(fila_t **fila, fila_t *elem)
 {
-  if (!queue || !elem)
+  if (!fila || !elem)
   {
-    fprintf(stderr, "Error: queue_append\n");
-    return ;
+    fprintf(stderr, "Erro ao adicionar na fila\n");
+    return;
   }
 
-  if (*queue) // if the queue is not empty
+  if (*fila) // se a fila nao esta vazia
   {
-    queue_t *last = (*queue)->prev;
-    elem->next = (*queue);
-    (*queue)->prev = elem;
+    fila_t *last = (*fila)->prev;
+    elem->next = (*fila);
+    (*fila)->prev = elem;
     elem->prev = last;
     last->next = elem;
   }
   else
   {
-    (*queue) = elem;
-    (*queue)->next = (*queue)->prev = elem;
+    (*fila) = elem;
+    (*fila)->next = (*fila)->prev = elem;
   }
 
-  return ;
+  return;
 }
 
 /* ------------------------------------------------------------------------------ */
 
-queue_t *queue_remove (queue_t **queue, queue_t *elem)
+fila_t *fila_remove(fila_t **fila, fila_t *elem)
 {
-  if (!queue || !elem)
+  if (!fila || !elem)
   {
-    fprintf(stderr, "Error: queue_remove\n");
+    fprintf(stderr, "Erro ao remover da fila\n");
     return NULL;
   }
 
-  queue_t *aux = elem;
+  fila_t *aux = elem;
 
-  if (aux == (*queue)) // if it is the beginning of the queue
-    (*queue) = aux->next == aux ? NULL : (*queue)->next; // if it is the only element in the queue
+  if (aux == (*fila))                                  // se for o comeco da fila
+    (*fila) = aux->next == aux ? NULL : (*fila)->next; // se for o unico elemento da fila
 
   elem->prev->next = elem->next;
   elem->next->prev = elem->prev;
   elem->next = elem->prev = NULL;
   return elem;
-}
-
-/* ------------------------------------------------------------------------------ */
-
-unsigned int queue_size (queue_t *queue)
-{
-  unsigned int size = 0;
-
-  if (queue)
-  {
-    queue_t *it = queue;
-    do
-      size++;
-    while ((it = it->next) != queue);
-  }
-
-  return size;
 }

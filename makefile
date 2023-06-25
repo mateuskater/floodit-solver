@@ -2,44 +2,19 @@ SHELL = /bin/bash
 CC = gcc
 CFLAGS = -g -Wall -O3
 
-# ---------------------------------------
-
-subdir = queue-graph/src
-sources := $(shell $\
-             gfl=$$(ls {g,q}*.c); $\
-             echo "$$gfl")
-sources += $(wildcard *.c)
-objects = $(sources:.c=.o)
-exec = floodit
-
-# ---------------------------------------
+SRC := floodit.c graph.c queue.c main.c
+objs = $(SRC:.c=.o)
+EXE = floodit
 
 .PHONY: all clean purge
 
-# ---------------------------------------
+all: $(EXE)
 
-all: $(exec)
-
-$(exec): $(objects)
+$(EXE): $(objs)
 	$(CC) $(CFLAGS) $^ -o $@
 
-# ---------------------------------------
-
 clean:
-	rm -f $(objects)
+	rm -f $(objs)
 
 purge:
-	rm -f $(objects) $(exec)
-
-
-# EXE = solve
-# SRC = main.c
-
-# all: $(EXE)
-
-# $(EXE): $(SRC)
-# 	gcc $(SRC) -o $(EXE) -g
-
-# clean:
-# 	rm -f $(EXE)
-# 	rm *.o
+	rm -f $(objs) $(EXE)
