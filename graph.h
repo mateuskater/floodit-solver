@@ -1,8 +1,6 @@
 #ifndef _GRAPH_H
 #define _GRAPH_H
 
-/* ------------------------------------------------------------------------------ */
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -10,18 +8,16 @@
 
 #include "queue.h"
 
-/* ------------------------------------------------------------------------------ */
-
 typedef struct grafo_t grafo_t;
 typedef struct vertice_t vertice_t;
-typedef struct edge_t edge_t;
+typedef struct aresta_t aresta_t;
 
 /* ------------------------------------------------------------------------------
- * structure: graph
+ * struct grafo_t
  * ------------------------------------------------------------------------------
- * vertices: graph vertices
- * nome: graph nome
- * size: graph size (number of vertices)
+ * vertices: vertices do grafo
+ * nome: nome do grafo
+ * tam: tamanho do grafo (numero de vertices)
  * ------------------------------------------------------------------------------ */
 
 struct grafo_t
@@ -32,36 +28,36 @@ struct grafo_t
 };
 
 /* ------------------------------------------------------------------------------
- * structure: vertice
+ * struct vertice_t
  * ------------------------------------------------------------------------------
- * prev: pointer to the previous vertice
- * next: pointer to the next vertice
- * arestas: pointer to a list of arestas that connect to the vertice
- * value: vertice value (generic)
- * grau: current vertice grau
- * id: vertice id (must be unique)
+ * prev: ponteiro para o vertice anterior
+ * next: ponteiro para o proximo vertice
+ * arestas: ponteiro para uma lista de arestas que se conectam ao vertice
+ * valor: valor do vertice
+ * grau: grau do vertice atual
+ * id: id do vertice
  * ------------------------------------------------------------------------------ */
 
 struct vertice_t
 {
   vertice_t *prev, *next;
-  edge_t *arestas;
-  int value;
+  aresta_t *arestas;
+  int valor;
   int grau;
   int id;
 };
 
 /* ------------------------------------------------------------------------------
- * structure: edge
+ * struct aresta_t
  * ------------------------------------------------------------------------------
  * prev: ponteiro para a proxima aresta
  * next: ponteiro para a proxima aresta
  * vertice: vertice conectado a essa aresta
  * ------------------------------------------------------------------------------ */
 
-struct edge_t
+struct aresta_t
 {
-  edge_t *prev, *next;
+  aresta_t *prev, *next;
   vertice_t *vertice;
 };
 
@@ -81,13 +77,13 @@ grafo_t *cria_grafo(char *nome);
  * insere um vertice no grafo selecionado
  *
  * g: grafo no qual o vertice vai ser inserido
- * value: valor do vertice
+ * valor: valor do vertice
  * id: id do vertice
  *
  * retorna ponteiro para o vertice adicionado
  * ------------------------------------------------------------------------------ */
 
-vertice_t *add_vertice(grafo_t *g, int value, int id);
+vertice_t *add_vertice(grafo_t *g, int valor, int id);
 
 /* ------------------------------------------------------------------------------
  * remove_vertice
@@ -129,7 +125,7 @@ int add_aresta(vertice_t *v1, vertice_t *v2);
  * retorna ponteiro para a aresta removida
  * ------------------------------------------------------------------------------ */
 
-edge_t *remove_aresta(vertice_t *v1, vertice_t *v2);
+aresta_t *remove_aresta(vertice_t *v1, vertice_t *v2);
 
 /* ------------------------------------------------------------------------------
  * busca_aresta
@@ -142,7 +138,7 @@ edge_t *remove_aresta(vertice_t *v1, vertice_t *v2);
  * retorna ponteiro para a aresta encontrada ou NULL se nao encontrada
  * ------------------------------------------------------------------------------ */
 
-edge_t *busca_aresta(edge_t *e, vertice_t *v);
+aresta_t *busca_aresta(aresta_t *e, vertice_t *v);
 
 /* ------------------------------------------------------------------------------
  * function: search_neighbourhood
@@ -167,7 +163,5 @@ int busca_vizinhanca(vertice_t *v1, vertice_t *v2);
  * ------------------------------------------------------------------------------ */
 
 int destroi_grafo(grafo_t *g);
-
-/* ------------------------------------------------------------------------------ */
 
 #endif

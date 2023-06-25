@@ -1,7 +1,5 @@
 #include "graph.h"
 
-/* ------------------------------------------------------------------------------ */
-
 grafo_t *cria_grafo (char *nome)
 {
   grafo_t *g = (grafo_t *) malloc(sizeof(grafo_t));
@@ -14,9 +12,7 @@ grafo_t *cria_grafo (char *nome)
   return g;
 }
 
-/* ------------------------------------------------------------------------------ */
-
-vertice_t *add_vertice (grafo_t *g, int value, int id)
+vertice_t *add_vertice (grafo_t *g, int valor, int id)
 {
   if (!g)
     return NULL;
@@ -28,14 +24,12 @@ vertice_t *add_vertice (grafo_t *g, int value, int id)
   new_vertex->next = new_vertex->prev = NULL;
   new_vertex->arestas = NULL;
   new_vertex->grau = 0;
-  new_vertex->value = value;
+  new_vertex->valor = valor;
   new_vertex->id = id;
 
   fila_add((fila_t **) &(g->vertices), (fila_t *) new_vertex);
   return new_vertex;
 }
-
-/* ------------------------------------------------------------------------------ */
 
 vertice_t *remove_vertice (grafo_t *g, vertice_t *v, int is_directed)
 {
@@ -61,14 +55,12 @@ vertice_t *remove_vertice (grafo_t *g, vertice_t *v, int is_directed)
   return (vertice_t *) fila_remove((fila_t **) &(g->vertices), (fila_t *) v);
 }
 
-/* ------------------------------------------------------------------------------ */
-
 int add_aresta (vertice_t *v1, vertice_t *v2)
 {
   if (!v1 || !v2)
     return 0;
 
-  edge_t *new_edge = (edge_t *) malloc(sizeof(edge_t));
+  aresta_t *new_edge = (aresta_t *) malloc(sizeof(aresta_t));
 
   new_edge->vertice = v2;
   new_edge->next = new_edge->prev = NULL;
@@ -79,33 +71,29 @@ int add_aresta (vertice_t *v1, vertice_t *v2)
   return 1;
 }
 
-/* ------------------------------------------------------------------------------ */
-
-edge_t *remove_aresta (vertice_t *v1, vertice_t *v2)
+aresta_t *remove_aresta (vertice_t *v1, vertice_t *v2)
 {
   if (!v1 || !v2)
     return NULL;
 
-  edge_t *aux_edge;
+  aresta_t *aux_edge;
 
   if ((aux_edge = busca_aresta(v1->arestas, v2)))
   {
     v1->grau--;
     // removes v2 from v1
-    return (edge_t *) fila_remove((fila_t **) &(v1->arestas), (fila_t *) aux_edge);
+    return (aresta_t *) fila_remove((fila_t **) &(v1->arestas), (fila_t *) aux_edge);
   }
 
   return NULL;
 }
 
-/* ------------------------------------------------------------------------------ */
-
-edge_t *busca_aresta (edge_t *e, vertice_t *v)
+aresta_t *busca_aresta (aresta_t *e, vertice_t *v)
 {
   if (!e || !v)
     return NULL;
 
-  edge_t *edge_it = e;
+  aresta_t *edge_it = e;
 
   do
     if (edge_it->vertice == v) // if the edge is found
@@ -115,14 +103,12 @@ edge_t *busca_aresta (edge_t *e, vertice_t *v)
   return NULL;
 }
 
-/* ------------------------------------------------------------------------------ */
-
 int busca_vizinhanca (vertice_t *v1, vertice_t *v2)
 {
   if (!v1 || !v2)
     return 0;
 
-  edge_t *edge_it;
+  aresta_t *edge_it;
 
   if ((edge_it = v1->arestas))
     do
@@ -133,16 +119,14 @@ int busca_vizinhanca (vertice_t *v1, vertice_t *v2)
   return 0;
 }
 
-/* ------------------------------------------------------------------------------ */
-
 int destroi_grafo (grafo_t *g)
 {
   if (!g)
     return 0;
 
-  while (g->vertices) // while there is vertices to be removed
+  while (g->vertices) // enquanto ainda existirem vertices para remover
   {
-    while (g->vertices->arestas) // while there is edges to be removed
+    while (g->vertices->arestas) // enquanto ainda existir arestas para remover
       free(fila_remove((fila_t **) &(g->vertices->arestas), (fila_t *) g->vertices->arestas));
     free(fila_remove((fila_t **) &(g->vertices), (fila_t *) g->vertices));
   }

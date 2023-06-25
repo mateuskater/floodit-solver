@@ -78,7 +78,7 @@ int merge_grafo_inicial (grafo_t *mapa)
   // percorre o grafo e merge as cores iniciais
   for (unsigned int i = 0; i < tam; ++i)
   {
-    transfere_vizinhos(mapa, iterador_vertice, iterador_vertice->value);
+    transfere_vizinhos(mapa, iterador_vertice, iterador_vertice->valor);
     iterador_vertice = iterador_vertice->next;
   }
 
@@ -90,12 +90,12 @@ int transfere_vizinhos (grafo_t *mapa, vertice_t *receptor, int cor)
   if (!mapa || !receptor || cor < 0)
     return 0;
 
-  edge_t *arestas_iterador = receptor->arestas, *aux;
+  aresta_t *arestas_iterador = receptor->arestas, *aux;
   unsigned int i = 0, tam = receptor->grau;
 
   while (i < tam)
   {
-    if ((arestas_iterador->vertice->value == cor) && (aux = arestas_iterador->vertice->arestas))
+    if ((arestas_iterador->vertice->valor == cor) && (aux = arestas_iterador->vertice->arestas))
     {
       do
       {
@@ -128,23 +128,23 @@ int propaga_cor (grafo_t *mapa, vertice_t *raiz, int cor)
   if (!mapa || !raiz || cor < 0)
     return 0;
 
-  raiz->value = cor;
+  raiz->valor = cor;
   transfere_vizinhos(mapa, raiz, cor);
   return 1;
 }
 
-int a_star (grafo_t *mapa, node_t *open_nodes)
+int a_star (grafo_t *mapa, node_t *nodos_abertos)
 {
   if (!mapa)
     return 0;
 
   node_t *node, *node_filho;
-  edge_t *node_arestas;
+  aresta_t *node_arestas;
 
-  while (open_nodes)
+  while (nodos_abertos)
   {
     // atualiza mapa do topo
-    node = open_nodes;
+    node = nodos_abertos;
     node->mapa_atual = clona_grafo(node->mapa_atual);
     propaga_cor(node->mapa_atual, node->mapa_atual->vertices, node->cor);
 
@@ -155,29 +155,29 @@ int a_star (grafo_t *mapa, node_t *open_nodes)
     {
       do
       {
-        node_filho = busca_cor_filhos(node, node_arestas->vertice->value);
+        node_filho = busca_cor_filhos(node, node_arestas->vertice->valor);
 
         if (!node_filho){
           node_filho = (node_t *) malloc(sizeof(node_t));
           node_filho->next = node_filho->prev = NULL;
           node_filho->pai = node;
-          node_filho->cor = node_arestas->vertice->value;
+          node_filho->cor = node_arestas->vertice->valor;
           node_filho->mapa_atual = node_filho->pai->mapa_atual;
 
           // heuristica ------------------------------
 
           int i = 0, grau = 0;
-          edge_t *e_it = node_filho->mapa_atual->vertices->arestas;
+          aresta_t *a_it = node_filho->mapa_atual->vertices->arestas; // iterar sobre arestas
 
           do
           {
-            if (e_it->vertice->value == node_filho->cor)
+            if (a_it->vertice->valor == node_filho->cor)
             {
               i++;
-              grau += e_it->vertice->grau - 1;
+              grau += a_it->vertice->grau - 1;
             }
           }
-          while ((e_it = e_it->next) != node_filho->mapa_atual->vertices->arestas);
+          while ((a_it = a_it->next) != node_filho->mapa_atual->vertices->arestas);
 
           node_filho->g = node->g + 2.0;
           node_filho->h = (node_filho->mapa_atual->tam - i) * 1.0;
@@ -190,7 +190,7 @@ int a_star (grafo_t *mapa, node_t *open_nodes)
 
           // ----------------------------------------
 
-          add_fila_prioridade(&(open_nodes), node_filho);
+          add_fila_prioridade(&(nodos_abertos), node_filho);
         }
       }
       while ((node_arestas = node_arestas->next) != node->mapa_atual->vertices->arestas);
@@ -225,7 +225,7 @@ int a_star (grafo_t *mapa, node_t *open_nodes)
       break;
     }
 
-    fila_remove((fila_t **) &(open_nodes), (fila_t *) node);
+    fila_remove((fila_t **) &(nodos_abertos), (fila_t *) node);
   }
 
   return 1;
@@ -254,11 +254,11 @@ int acha_solucao (grafo_t *mapa)
   raiz->next = raiz->prev = raiz;
   raiz->g = 0.0;
   raiz->h = mapa->tam;
-  raiz->cor = mapa->vertices->value;
+  raiz->cor = mapa->vertices->valor;
   raiz->mapa_atual = mapa;
 
-  node_t *open_nodes = raiz;
-  return a_star(mapa, open_nodes);
+  node_t *nodos_abertos = raiz;
+  return a_star(mapa, nodos_abertos);
 }
 
 void add_fila_prioridade (node_t **fila, node_t *elem)
@@ -319,13 +319,13 @@ grafo_t *clona_grafo (grafo_t *old)
 
   do
   {
-    v_new[i] = add_vertice(new, iterador_vertice->value, iterador_vertice->id);
+    v_new[i] = add_vertice(new, iterador_vertice->valor, iterador_vertice->id);
     v_old[i] = iterador_vertice;
     i++;
   }
   while ((iterador_vertice = iterador_vertice->next) != old->vertices);
 
-  edge_t *e;
+  aresta_t *e;
   vertice_t *vizinho = NULL;
 
   for (int j = 0; j < i; ++j)
@@ -342,8 +342,8 @@ grafo_t *clona_grafo (grafo_t *old)
         }
       }
 
-      edge_t *aresta_aux;
-      aresta_aux = (edge_t *) malloc(sizeof(edge_t));
+      aresta_t *aresta_aux;
+      aresta_aux = (aresta_t *) malloc(sizeof(aresta_t));
       aresta_aux->vertice = vizinho;
       aresta_aux->next = aresta_aux->prev = NULL;
       fila_add((fila_t **) &(v_new[j]->arestas), (fila_t *) aresta_aux);
