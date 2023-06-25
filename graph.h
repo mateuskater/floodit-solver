@@ -32,14 +32,14 @@ struct grafo_t
 };
 
 /* ------------------------------------------------------------------------------
- * structure: vertex
+ * structure: vertice
  * ------------------------------------------------------------------------------
- * prev: pointer to the previous vertex
- * next: pointer to the next vertex
- * arestas: pointer to a list of arestas that connect to the vertex
- * value: vertex value (generic)
- * grau: current vertex grau
- * id: vertex id (must be unique)
+ * prev: pointer to the previous vertice
+ * next: pointer to the next vertice
+ * arestas: pointer to a list of arestas that connect to the vertice
+ * value: vertice value (generic)
+ * grau: current vertice grau
+ * id: vertice id (must be unique)
  * ------------------------------------------------------------------------------ */
 
 struct vertice_t
@@ -56,13 +56,13 @@ struct vertice_t
  * ------------------------------------------------------------------------------
  * prev: ponteiro para a proxima aresta
  * next: ponteiro para a proxima aresta
- * vertex: vertice conectado a essa aresta
+ * vertice: vertice conectado a essa aresta
  * ------------------------------------------------------------------------------ */
 
 struct edge_t
 {
   edge_t *prev, *next;
-  vertice_t *vertex;
+  vertice_t *vertice;
 };
 
 /* ------------------------------------------------------------------------------
@@ -95,7 +95,7 @@ vertice_t *add_vertice(grafo_t *g, int value, int id);
  * remove um vertice de um grafo selecionado
  *
  * g: grafo de que o vertice vai ser removido
- * v: vertex to be removed
+ * v: vertice to be removed
  * direcionado: indicates if the graph is directed (1) or not (0)
  *
  * retorna ponteiro para o vertice removido
@@ -149,8 +149,8 @@ edge_t *busca_aresta(edge_t *e, vertice_t *v);
  * ------------------------------------------------------------------------------
  * verifies if if v1 has v2 as a neighbour.
  *
- * v1: vertex which the neighbourhood will be searched
- * v2: vertex to search in the neighbourhood of v1
+ * v1: vertice which the neighbourhood will be searched
+ * v2: vertice to search in the neighbourhood of v1
  *
  * returns: 1 if there is neighbourhood or 0 if there is not
  * ------------------------------------------------------------------------------ */

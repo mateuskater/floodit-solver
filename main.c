@@ -13,5 +13,5 @@ int main ()
   }
 
   merge_grafo_inicial(G);
-  find_solution(G);
+  acha_solucao(G);
 }

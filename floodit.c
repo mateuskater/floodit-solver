@@ -95,19 +95,19 @@ int transfere_vizinhos (grafo_t *mapa, vertice_t *receptor, int cor)
 
   while (i < tam)
   {
-    if ((arestas_iterador->vertex->value == cor) && (aux = arestas_iterador->vertex->arestas))
+    if ((arestas_iterador->vertice->value == cor) && (aux = arestas_iterador->vertice->arestas))
     {
       do
       {
-        if ((receptor->id != aux->vertex->id) && !busca_vizinhanca(receptor, aux->vertex))
+        if ((receptor->id != aux->vertice->id) && !busca_vizinhanca(receptor, aux->vertice))
         {
-          add_aresta(receptor, aux->vertex);
-          add_aresta(aux->vertex, receptor);
+          add_aresta(receptor, aux->vertice);
+          add_aresta(aux->vertice, receptor);
         }
       }
-      while ((aux = aux->next) != arestas_iterador->vertex->arestas);
+      while ((aux = aux->next) != arestas_iterador->vertice->arestas);
 
-      free(remove_vertice(mapa, arestas_iterador->vertex, 0));
+      free(remove_vertice(mapa, arestas_iterador->vertice, 0));
 
       i = 0;
       tam = receptor->grau;
@@ -145,7 +145,7 @@ int a_star (grafo_t *mapa, node_t *open_nodes)
   {
     // atualiza mapa do topo
     node = open_nodes;
-    node->mapa_atual = clone_graph(node->mapa_atual);
+    node->mapa_atual = clona_grafo(node->mapa_atual);
     propaga_cor(node->mapa_atual, node->mapa_atual->vertices, node->cor);
 
     node_arestas = node->mapa_atual->vertices->arestas;
@@ -155,13 +155,13 @@ int a_star (grafo_t *mapa, node_t *open_nodes)
     {
       do
       {
-        node_filho = search_children_color(node, node_arestas->vertex->value);
+        node_filho = busca_cor_filhos(node, node_arestas->vertice->value);
 
         if (!node_filho){
           node_filho = (node_t *) malloc(sizeof(node_t));
           node_filho->next = node_filho->prev = NULL;
           node_filho->pai = node;
-          node_filho->cor = node_arestas->vertex->value;
+          node_filho->cor = node_arestas->vertice->value;
           node_filho->mapa_atual = node_filho->pai->mapa_atual;
 
           // heuristica ------------------------------
@@ -171,10 +171,10 @@ int a_star (grafo_t *mapa, node_t *open_nodes)
 
           do
           {
-            if (e_it->vertex->value == node_filho->cor)
+            if (e_it->vertice->value == node_filho->cor)
             {
               i++;
-              grau += e_it->vertex->grau - 1;
+              grau += e_it->vertice->grau - 1;
             }
           }
           while ((e_it = e_it->next) != node_filho->mapa_atual->vertices->arestas);
@@ -190,7 +190,7 @@ int a_star (grafo_t *mapa, node_t *open_nodes)
 
           // ----------------------------------------
 
-          queue_append_priority(&(open_nodes), node_filho);
+          add_fila_prioridade(&(open_nodes), node_filho);
         }
       }
       while ((node_arestas = node_arestas->next) != node->mapa_atual->vertices->arestas);
@@ -231,7 +231,7 @@ int a_star (grafo_t *mapa, node_t *open_nodes)
   return 1;
 }
 
-node_t *search_children_color (node_t *node, int cor)
+node_t *busca_cor_filhos (node_t *node, int cor)
 {
   node_t *iterador = node;
 
@@ -246,7 +246,7 @@ node_t *search_children_color (node_t *node, int cor)
   return NULL;
 }
 
-int find_solution (grafo_t *mapa)
+int acha_solucao (grafo_t *mapa)
 {
   // cria arvore de busca
   node_t *raiz = malloc(sizeof(node_t));
@@ -261,11 +261,11 @@ int find_solution (grafo_t *mapa)
   return a_star(mapa, open_nodes);
 }
 
-void queue_append_priority (node_t **fila, node_t *elem)
+void add_fila_prioridade (node_t **fila, node_t *elem)
 {
   if (!fila || !elem)
   {
-    fprintf(stderr, "Error: queue_append_priority\n");
+    fprintf(stderr, "Error: add_fila_prioridade\n");
     return ;
   }
 
@@ -306,7 +306,7 @@ void queue_append_priority (node_t **fila, node_t *elem)
   return ;
 }
 
-grafo_t *clone_graph (grafo_t *old)
+grafo_t *clona_grafo (grafo_t *old)
 {
   grafo_t *new = cria_grafo("new");
 
@@ -335,7 +335,7 @@ grafo_t *clone_graph (grafo_t *old)
     {
       for (int k = 0; k < i; ++k)
       {
-        if (v_new[k]->id == e->vertex->id)
+        if (v_new[k]->id == e->vertice->id)
         {
           vizinho = v_new[k];
           k = i;
@@ -344,7 +344,7 @@ grafo_t *clone_graph (grafo_t *old)
 
       edge_t *aresta_aux;
       aresta_aux = (edge_t *) malloc(sizeof(edge_t));
-      aresta_aux->vertex = vizinho;
+      aresta_aux->vertice = vizinho;
       aresta_aux->next = aresta_aux->prev = NULL;
       fila_add((fila_t **) &(v_new[j]->arestas), (fila_t *) aresta_aux);
       v_new[j]->grau++;

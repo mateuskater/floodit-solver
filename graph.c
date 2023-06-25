@@ -48,13 +48,13 @@ vertice_t *remove_vertice (grafo_t *g, vertice_t *v, int is_directed)
   {
     if (is_directed)
     {
-      free(remove_aresta(v->arestas->vertex, v));
+      free(remove_aresta(v->arestas->vertice, v));
       free(fila_remove((fila_t **) &(v->arestas), (fila_t *) v->arestas));
     }
     else
     {
-      free(remove_aresta(v->arestas->vertex, v));
-      free(remove_aresta(v, v->arestas->vertex));
+      free(remove_aresta(v->arestas->vertice, v));
+      free(remove_aresta(v, v->arestas->vertice));
     }
   }
 
@@ -70,7 +70,7 @@ int add_aresta (vertice_t *v1, vertice_t *v2)
 
   edge_t *new_edge = (edge_t *) malloc(sizeof(edge_t));
 
-  new_edge->vertex = v2;
+  new_edge->vertice = v2;
   new_edge->next = new_edge->prev = NULL;
   // inserts v2 in v1
   fila_add((fila_t **) &(v1->arestas), (fila_t *) new_edge);
@@ -108,7 +108,7 @@ edge_t *busca_aresta (edge_t *e, vertice_t *v)
   edge_t *edge_it = e;
 
   do
-    if (edge_it->vertex == v) // if the edge is found
+    if (edge_it->vertice == v) // if the edge is found
       return edge_it;
   while ((edge_it = edge_it->next) != e);
 
@@ -126,7 +126,7 @@ int busca_vizinhanca (vertice_t *v1, vertice_t *v2)
 
   if ((edge_it = v1->arestas))
     do
-      if (edge_it->vertex == v2) // checks if v1 has v2 as a neighbour
+      if (edge_it->vertice == v2) // checks if v1 has v2 as a neighbour
         return 1;
     while ((edge_it = edge_it->next) != v1->arestas);
 
