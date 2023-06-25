@@ -1,4 +1,6 @@
 *.out
 *.o
-*.txt
+*.tar.gz
+exemplo_mapa_30_30_10.txt
+exemplo_solucao_30_30_10.txt
 floodit

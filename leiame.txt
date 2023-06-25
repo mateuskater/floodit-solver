@@ -1,0 +1,15 @@
+
+Funcionamento
+
+    Cria um grafo e uma matriz temporária representando o mapa, o grafo com o mesmo numero de nós que o número de posições do mapa,
+bem como a matriz com as mesmas dimensoes do mapa. Durante a leitura do arquivo mapa, ambas são populadas. Nesse processo,
+a vizinhança de cada nó é verificada, sendo que cada nó possui uma fila representando todos os nós ligados diretamente ao
+nó em questão. Após a leitura, a matriz é descartada e o grafo está pronto.
+    Feito isso, o grafo inicial é percorrido uma primeira vez à partir do canto A, realizando um merge de todos os nós adjacentes
+à aresta do canto superior esquesdo, e que possuírem a mesma cor. Então, registra essa vizinhança do grafo em um vetor de nós 
+denominado "receptor". Cada vertice de mesma cor encontrado é removido da árvore de busca representada pelo mapa do jogo, para
+garantir que esses nós não serão analisados desnecessariamente pela busca no futuro. Essa estratégia substitui a idéia de um vetor
+"closed_nodes" que registra os nós visitados. Se o nó removido representar um tabuleiro totalmente preenchido, o jogo foi
+resolvido e o caminho até esse nó é a solução. A heurística para escolha da cor em cada jogada se baseia em uma análise de qual
+escolha de cor irá atingir o maior número de nós para eliminação, tentando assim reduzir ao máximo o número de jogadas necessárias
+para terminar o jogo. 

@@ -182,13 +182,13 @@ int a_star (grafo_t *mapa, node_t *nodos_abertos)
           while ((a_it = a_it->next) != node_filho->mapa_atual->vertices->arestas);
 
           node_filho->g = node->g + 2.0;
-          node_filho->h = (node_filho->mapa_atual->tam - i) * 1.0;
-          node_filho->h -= grau * 0.95;
+          node_filho->sizeMapa = (node_filho->mapa_atual->tam - i) * 1.0;
+          node_filho->sizeMapa -= grau * 0.95;
 
-          if (node_filho->h <= 0)
-            node_filho->h = 0.0;
+          if (node_filho->sizeMapa <= 0)
+            node_filho->sizeMapa = 0.0;
 
-          node_filho->h += (node_filho->mapa_atual->tam - i) * 1.0;
+          node_filho->sizeMapa += (node_filho->mapa_atual->tam - i) * 1.0;
 
           // ----------------------------------------
 
@@ -255,7 +255,7 @@ int acha_solucao (grafo_t *mapa)
   raiz->pai = NULL;
   raiz->next = raiz->prev = raiz;
   raiz->g = 0.0;
-  raiz->h = mapa->tam;
+  raiz->sizeMapa = mapa->tam;
   raiz->cor = mapa->vertices->valor;
   raiz->mapa_atual = mapa;
 
@@ -274,18 +274,18 @@ void add_fila_prioridade (node_t **fila, node_t *elem)
   if (*fila)
   {
     node_t *iterador = (*fila);
-    double elem_f = elem->g + elem->h, iterator_f;
+    double elem_f = elem->g + elem->sizeMapa, iterator_f;
 
-    if(elem->h <= 1)
+    if(elem->sizeMapa <= 1)
     {
-      iterator_f = iterador->g + iterador->h;
+      iterator_f = iterador->g + iterador->sizeMapa;
       iterador = iterador->next;
     }
     else
     {
       do
       {
-        iterator_f = iterador->g + iterador->h;
+        iterator_f = iterador->g + iterador->sizeMapa;
         iterador = iterador->next;
       }
       while ((iterator_f < elem_f) && (iterador != (*fila)));
@@ -296,7 +296,7 @@ void add_fila_prioridade (node_t **fila, node_t *elem)
     iterador->prev->next = elem;
     iterador->prev = elem;
 
-    if (((*fila)->g + (*fila)->h) > elem_f)
+    if (((*fila)->g + (*fila)->sizeMapa) > elem_f)
       (*fila) = elem;
   }
   else

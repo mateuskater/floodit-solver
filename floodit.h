@@ -19,7 +19,7 @@ struct node_t
   grafo_t *mapa_atual;
   int cor;
   double g;
-  double h;
+  double sizeMapa;
 };
 
 grafo_t *le_mapa(char *nome, FILE *input);
