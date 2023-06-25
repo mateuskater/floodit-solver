@@ -10,6 +10,6 @@ nó em questão. Após a leitura, a matriz é descartada e o grafo está pronto.
 denominado "receptor". Cada vertice de mesma cor encontrado é removido da árvore de busca representada pelo mapa do jogo, para
 garantir que esses nós não serão analisados desnecessariamente pela busca no futuro. Essa estratégia substitui a idéia de um vetor
 "closed_nodes" que registra os nós visitados. Se o nó removido representar um tabuleiro totalmente preenchido, o jogo foi
-resolvido e o caminho até esse nó é a solução. A heurística para escolha da cor em cada jogada se baseia em uma análise de qual
-escolha de cor irá atingir o maior número de nós para eliminação, tentando assim reduzir ao máximo o número de jogadas necessárias
-para terminar o jogo. 
+resolvido e o caminho até esse nó é a solução. A heurística para escolha da cor em cada jogada se baseia em um algoritmo A* que
+analisa qual escolha de cor irá atingir o maior número de nós para eliminação, tentando assim reduzir ao máximo o número de
+jogadas necessárias para terminar o jogo.
