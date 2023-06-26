@@ -17,7 +17,7 @@ struct fila_t
 void fila_add (fila_t **queue, fila_t *elem) ;
 
 /* ------------------------------------------------------------------------------
- * remove um elemento da fila e retorna ele
+ * fila_remove: remove um elemento da fila e retorna ele
  * ------------------------------------------------------------------------------ */
 
 fila_t *fila_remove (fila_t **queue, fila_t *elem) ;

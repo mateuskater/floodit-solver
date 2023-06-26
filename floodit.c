@@ -27,7 +27,8 @@ grafo_t *le_mapa (char *nome, FILE *input)
       vertice_t *atual = matriz_mapa[idx(largura, i, j)];
       vertice_t *vizinho = NULL;
 
-      if (i > 0){ // tem vizinho acima
+      if (i > 0) // tem vizinho acima
+      {
         vizinho = matriz_mapa[idx(largura, i - 1, j)];
         if (!busca_vizinhanca(atual, vizinho))
           add_aresta(atual, vizinho);
@@ -35,7 +36,8 @@ grafo_t *le_mapa (char *nome, FILE *input)
           add_aresta(vizinho, atual);
       }
 
-      if (i < altura - 1){ // tem vizinho abaixo
+      if (i < altura - 1) // tem vizinho abaixo
+      { 
         vizinho = matriz_mapa[idx(largura, i + 1, j)];
         if (!busca_vizinhanca(atual, vizinho))
           add_aresta(atual, vizinho);
@@ -72,14 +74,14 @@ int merge_grafo_inicial (grafo_t *mapa)
   if (!mapa)
     return 0;
 
-  vertice_t *iterador_vertice = mapa->vertices;
+  vertice_t *iter_vertice = mapa->vertices;
   unsigned int tam = mapa->tam;
 
   // percorre o grafo e merge as cores iniciais
   for (unsigned int i = 0; i < tam; ++i)
   {
-    transfere_vizinhos(mapa, iterador_vertice, iterador_vertice->valor);
-    iterador_vertice = iterador_vertice->next;
+    transfere_vizinhos(mapa, iter_vertice, iter_vertice->valor);
+    iter_vertice = iter_vertice->next;
   }
 
   return 1;
@@ -310,7 +312,7 @@ grafo_t *clona_grafo (grafo_t *old)
 {
   grafo_t *new = cria_grafo("new");
 
-  vertice_t *iterador_vertice = old->vertices;
+  vertice_t *iter_vertice = old->vertices;
   unsigned int tam = old->tam;
 
   vertice_t **v_old = (vertice_t **) malloc(sizeof(vertice_t *) * tam);
@@ -319,37 +321,37 @@ grafo_t *clona_grafo (grafo_t *old)
 
   do
   {
-    v_new[i] = add_vertice(new, iterador_vertice->valor, iterador_vertice->id);
-    v_old[i] = iterador_vertice;
+    v_new[i] = add_vertice(new, iter_vertice->valor, iter_vertice->id);
+    v_old[i] = iter_vertice;
     i++;
   }
-  while ((iterador_vertice = iterador_vertice->next) != old->vertices);
+  while ((iter_vertice = iter_vertice->next) != old->vertices);
 
-  aresta_t *e;
+  aresta_t *a;
   vertice_t *vizinho = NULL;
 
   for (int j = 0; j < i; ++j)
   {
-    e = v_old[j]->arestas;
+    a = v_old[j]->arestas;
     do
     {
       for (int k = 0; k < i; ++k)
       {
-        if (v_new[k]->id == e->vertice->id)
+        if (v_new[k]->id == a->vertice->id)
         {
           vizinho = v_new[k];
           k = i;
         }
       }
 
-      aresta_t *aresta_aux;
-      aresta_aux = (aresta_t *) malloc(sizeof(aresta_t));
-      aresta_aux->vertice = vizinho;
-      aresta_aux->next = aresta_aux->prev = NULL;
-      fila_add((fila_t **) &(v_new[j]->arestas), (fila_t *) aresta_aux);
+      aresta_t *aux;
+      aux = (aresta_t *) malloc(sizeof(aresta_t));
+      aux->vertice = vizinho;
+      aux->next = aux->prev = NULL;
+      fila_add((fila_t **) &(v_new[j]->arestas), (fila_t *) aux);
       v_new[j]->grau++;
     }
-    while ((e = e->next) != v_old[j]->arestas);
+    while ((a = a->next) != v_old[j]->arestas);
   }
 
   free(v_old);

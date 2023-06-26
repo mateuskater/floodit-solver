@@ -60,12 +60,12 @@ int add_aresta (vertice_t *v1, vertice_t *v2)
   if (!v1 || !v2)
     return 0;
 
-  aresta_t *new_edge = (aresta_t *) malloc(sizeof(aresta_t));
+  aresta_t *new = (aresta_t *) malloc(sizeof(aresta_t));
 
-  new_edge->vertice = v2;
-  new_edge->next = new_edge->prev = NULL;
-  // inserts v2 in v1
-  fila_add((fila_t **) &(v1->arestas), (fila_t *) new_edge);
+  new->vertice = v2;
+  new->next = new->prev = NULL;
+  // insere v2 em v1
+  fila_add((fila_t **) &(v1->arestas), (fila_t *) new);
   v1->grau++;
 
   return 1;
@@ -76,13 +76,13 @@ aresta_t *remove_aresta (vertice_t *v1, vertice_t *v2)
   if (!v1 || !v2)
     return NULL;
 
-  aresta_t *aux_edge;
+  aresta_t *aux;
 
-  if ((aux_edge = busca_aresta(v1->arestas, v2)))
+  if ((aux = busca_aresta(v1->arestas, v2)))
   {
     v1->grau--;
-    // removes v2 from v1
-    return (aresta_t *) fila_remove((fila_t **) &(v1->arestas), (fila_t *) aux_edge);
+    // remove v2 de v1
+    return (aresta_t *) fila_remove((fila_t **) &(v1->arestas), (fila_t *) aux);
   }
 
   return NULL;
@@ -93,12 +93,12 @@ aresta_t *busca_aresta (aresta_t *e, vertice_t *v)
   if (!e || !v)
     return NULL;
 
-  aresta_t *edge_it = e;
+  aresta_t *iter = e;
 
   do
-    if (edge_it->vertice == v) // if the edge is found
-      return edge_it;
-  while ((edge_it = edge_it->next) != e);
+    if (iter->vertice == v) // if the edge is found
+      return iter;
+  while ((iter = iter->next) != e);
 
   return NULL;
 }
@@ -108,13 +108,13 @@ int busca_vizinhanca (vertice_t *v1, vertice_t *v2)
   if (!v1 || !v2)
     return 0;
 
-  aresta_t *edge_it;
+  aresta_t *iter;
 
-  if ((edge_it = v1->arestas))
+  if ((iter = v1->arestas))
     do
-      if (edge_it->vertice == v2) // checks if v1 has v2 as a neighbour
+      if (iter->vertice == v2) // checks if v1 has v2 as a neighbour
         return 1;
-    while ((edge_it = edge_it->next) != v1->arestas);
+    while ((iter = iter->next) != v1->arestas);
 
   return 0;
 }

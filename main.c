@@ -1,14 +1,12 @@
 #include "floodit.h"
 
-/* ------------------------------------------------------------------------------ */
-
 int main ()
 {
   grafo_t *G;
 
   if (!(G = le_mapa("map", stdin)))
   {
-    perror("unable to read input");
+    perror("input invalido");
     exit(1);
   }
 
